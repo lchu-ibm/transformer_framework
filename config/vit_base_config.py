@@ -176,6 +176,8 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
         "image_size"
     ), f"failed to build model args for {model_size=}...is your model size listed in config?"
     model = ViT(params=model_args)
+    print("====================Model Size: ")
+    print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     return model
 
