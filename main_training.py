@@ -329,7 +329,17 @@ def fsdp_main():
         model = FSDP(model, process_group=fsdp_pg)
 
     else:
-        model = FSDP(model, device_id=torch.cuda.current_device())
+        model = FSDP(
+            model,
+            process_group=process_group_fsdp,
+            auto_wrap_policy=my_auto_wrap_policy,
+            mixed_precision=mp_policy,
+            backward_prefetch=prefetch_policy,
+            sharding_strategy=cfg.sharding_strategy,
+            device_id=torch.cuda.current_device(),
+            forward_prefetch=cfg.forward_prefetch,
+            limit_all_gathers=False,
+        )
 
     if (
         cfg.load_model_checkpoint
