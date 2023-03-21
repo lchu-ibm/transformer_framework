@@ -332,7 +332,7 @@ def fsdp_main():
         model = FSDP(
             model,
             process_group=None,
-            auto_wrap_policy=my_auto_wrap_policy,
+            auto_wrap_policy=cfg.get_fsdp_policy(),
             mixed_precision=mp_policy,
             backward_prefetch=prefetch_policy,
             sharding_strategy=cfg.sharding_strategy,

@@ -40,7 +40,7 @@ class train_config(base_config):
     # model_num_heads = 16
 
     # use TP
-    use_tp: bool = True
+    use_tp: bool = False
 
     # training
     batch_size_training: int = 50
@@ -241,6 +241,15 @@ def get_pokemon_dataset():
 def get_policy():
     # todo - can't use autowrap policy with 2d
     return None  # get_policy_base({ViTEncoderBlock})
+
+
+def get_2d_policy():
+    # todo - can't use autowrap policy with 2d
+    return None  # get_policy_base({ViTEncoderBlock})
+
+
+def get_fsdp_policy():
+    return get_policy_base({ViTEncoderBlock})
 
 
 def fsdp_checkpointing(model):
