@@ -324,6 +324,8 @@ def fsdp_main():
         # print(f"{tp_model=}")
 
         fsdp_pg = twod_mesh.get_dim_groups()[0]
+        rank_print(rank, twod_mesh.get_dim_groups()[0])
+        rank_print(rank, twod_mesh.get_dim_groups()[1])
 
         # todo - add back main code later for resume
         device = "cuda"
