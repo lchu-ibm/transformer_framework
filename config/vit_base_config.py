@@ -40,7 +40,7 @@ class train_config(base_config):
     # model_num_heads = 16
 
     # use TP
-    use_tp: bool = True
+    use_tp: bool = False
 
     # training
     batch_size_training: int = 50
