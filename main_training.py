@@ -201,6 +201,8 @@ def fsdp_main():
             num_classes=cfg.num_categories,
         )
 
+    rank_print(rank, model)
+
     if local_rank == 0:
         print(f"--> {cfg.model_name} built.")
         num_params = (sum(p.numel() for p in model.parameters())) / 1e6
