@@ -331,7 +331,7 @@ def fsdp_main():
     else:
         model = FSDP(
             model,
-            process_group=process_group_fsdp,
+            process_group=None,
             auto_wrap_policy=my_auto_wrap_policy,
             mixed_precision=mp_policy,
             backward_prefetch=prefetch_policy,
