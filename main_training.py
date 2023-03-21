@@ -329,7 +329,7 @@ def fsdp_main():
         model = FSDP(model, process_group=fsdp_pg)
 
     else:
-        model = FSDP(model)
+        model = FSDP(model, device_id=torch.cuda.current_device())
 
     if (
         cfg.load_model_checkpoint
