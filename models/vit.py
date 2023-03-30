@@ -20,6 +20,12 @@ import math
 import numpy as np
 import torch
 
+from torch.distributed.fsdp import (
+    FullyShardedDataParallel as FSDP,
+    MixedPrecision,
+    StateDictType,
+)
+
 # from pycls.core.config import cfg
 from models.blocks import (
     MultiheadAttention,
@@ -54,6 +60,10 @@ class ViTHead(Module):
     def complexity(cx, w_in, num_classes):
         return linear_cx(cx, w_in, num_classes, bias=True)
 
+    def reset_parameters(self, *args, **kwargs):
+        for m in list(self.children()):
+            if not isinstance(m, FSDP):
+                m.reset_parameters()
 
 class MLPBlock(Module):
     """Transformer MLP block, fc, gelu, fc."""
@@ -72,6 +82,11 @@ class MLPBlock(Module):
         cx = linear_cx(cx, w_in, mlp_d, bias=True, num_locations=seq_len)
         cx = linear_cx(cx, mlp_d, w_in, bias=True, num_locations=seq_len)
         return cx
+
+    def reset_parameters(self, *args, **kwargs):
+        for m in list(self.children()):
+            if not isinstance(m, FSDP):
+                m.reset_parameters()
 
 
 class ViTEncoderBlock(Module):
@@ -106,6 +121,11 @@ class ViTEncoderBlock(Module):
         x_p = self.mlp_block(self.ln_2(x))
         return x + x_p
 
+    def reset_parameters(self, *args, **kwargs):
+        for m in list(self.children()):
+            if not isinstance(m, FSDP):
+                m.reset_parameters()
+
     @staticmethod
     def complexity(cx, hidden_d, n_heads, mlp_d, seq_len):
         cx = layernorm_cx(cx, hidden_d)
@@ -131,6 +151,11 @@ class ViTEncoder(Module):
             x = block(x)
         return x
 
+    def reset_parameters(self, *args, **kwargs):
+        for m in list(self.children()):
+            if not isinstance(m, FSDP):
+                m.reset_parameters()
+
     @staticmethod
     def complexity(cx, n_layers, hidden_d, n_heads, mlp_d, seq_len):
         for _ in range(n_layers):
@@ -153,6 +178,11 @@ class ViTStemPatchify(Module):
     def complexity(cx, w_in, w_out, k):
         return patchify2d_cx(cx, w_in, w_out, k, bias=True)
 
+    def reset_parameters(self, *args, **kwargs):
+        for m in list(self.children()):
+            if not isinstance(m, FSDP):
+                m.reset_parameters()
+
 
 class ViTStemConv(Module):
     """The conv vision transformer stem as per https://arxiv.org/abs/2106.14881."""
@@ -173,6 +203,11 @@ class ViTStemConv(Module):
         for layer in self.children():
             x = layer(x)
         return x
+
+    def reset_parameters(self, *args, **kwargs):
+        for m in list(self.children()):
+            if not isinstance(m, FSDP):
+                m.reset_parameters()
 
     @staticmethod
     def complexity(cx, w_in, ks, ws, ss):
@@ -287,6 +322,11 @@ class ViT(Module):
         )
         cx = ViTHead.complexity(cx, p["hidden_d"], p["num_classes"])
         return cx
+
+    def reset_parameters(self, *args, **kwargs):
+        for m in [self.stem, self.head]:
+            if not isinstance(m, FSDP):
+                m.reset_parameters()
 
 
 def init_weights_vit(model):
