@@ -104,16 +104,17 @@ def print_model(model, file_name, rank):
 
         external_file.close()
 
-    def print_memory_summary(prefix, device):
-        rank = int(os.getenv("RANK"))
-        if rank == 0:
-            peak_memory_active = torch.cuda.memory_stats().get("active_bytes.all.peak", 0)
-            print(
-                f"{prefix}, GPU peak memory allocation: {torch.cuda.max_memory_allocated(device) // 1e9}GB, "
-                f"GPU peak memory reserved: {torch.cuda.max_memory_reserved(device) // 1e9}GB, "
-                f"GPU peak memory active: {peak_memory_active // 1e9}GB"
-            )
-            torch.cuda.reset_peak_memory_stats(device)
+
+def print_memory_summary(prefix, device):
+    rank = int(os.getenv("RANK"))
+    if rank == 0:
+        peak_memory_active = torch.cuda.memory_stats().get("active_bytes.all.peak", 0)
+        print(
+            f"{prefix}, GPU peak memory allocation: {torch.cuda.max_memory_allocated(device) // 1e9}GB, "
+            f"GPU peak memory reserved: {torch.cuda.max_memory_reserved(device) // 1e9}GB, "
+            f"GPU peak memory active: {peak_memory_active // 1e9}GB"
+        )
+        torch.cuda.reset_peak_memory_stats(device)
 
 
 def setup():
