@@ -43,7 +43,7 @@ class train_config(base_config):
     use_tp: bool = True
 
     # training
-    batch_size_training: int = 64
+    batch_size_training: int = 10
 
     # image size
     image_size: int = 224
@@ -158,17 +158,17 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
             "image_size": 224,
             "patch_size": 16,
             "num_classes": NUM_CLASSES,
-            "mlp_dim": 3072,
+            "mlp_dim": 20480,
             "dropout": 0.1,
             "emb_dropout": 0.1,
             "c_stem_kernels": [],
             "c_stem_strides": [],
             "c_stem_dims": [],
-            "n_layers": 24,
-            "n_heads": 16,
-            "hidden_d": 1024,
-            "mlp_d": 4096,
-            "cls_type": "pooled",
+            "n_layers": 32,
+            "n_heads": 32,
+            "hidden_d": 5120,
+            "mlp_d": 20480,
+            "cls_type": "token",
             "stem_type": "patchify",
         }
 
@@ -176,6 +176,9 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
         "image_size"
     ), f"failed to build model args for {model_size=}...is your model size listed in config?"
     model = ViT(params=model_args)
+
+    print("====================Model Size: ")
+    print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     return model
 
