@@ -164,7 +164,7 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
             "c_stem_kernels": [],
             "c_stem_strides": [],
             "c_stem_dims": [],
-            "n_layers": 64,
+            "n_layers": 128,
             "n_heads": 32,
             "hidden_d": 5120,
             "mlp_d": 20480,
