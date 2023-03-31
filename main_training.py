@@ -372,7 +372,7 @@ def fsdp_main():
         )
         rank_print(rank, f"{twod_mesh=}")
 
-        for i in range(96):
+        for i in range(32):
             block = model.get_submodule(f"encoder.block_{i}")
             parallelized_block = parallelize_module(
                 module=block,
