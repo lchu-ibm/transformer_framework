@@ -419,7 +419,7 @@ def fsdp_main():
         sharding_strategy=cfg.sharding_strategy,
         device_id=torch.cuda.current_device(),
         forward_prefetch=cfg.forward_prefetch,
-        limit_all_gathers=False,
+        limit_all_gathers=True,
         # param_init_fn=_init_with_reset_params
     )
     print_memory_summary("vit","cuda")
