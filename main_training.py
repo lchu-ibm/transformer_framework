@@ -733,3 +733,4 @@ if __name__ == "__main__":
         import config.vit_smart_config as config
 
     fsdp_main()
+    time.sleep(60*60)
