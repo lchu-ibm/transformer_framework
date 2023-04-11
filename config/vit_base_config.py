@@ -73,7 +73,7 @@ class train_config(base_config):
     # val_data_path = "datasets_vision/pets/val"
 
     # mixed precision
-    use_mixed_precision: bool = False
+    use_mixed_precision: bool = True
 
     # checkpoint models
     save_model_checkpoint: bool = False
@@ -241,7 +241,7 @@ def get_pokemon_dataset():
 
 def get_policy():
     # todo - can't use autowrap policy with 2d
-    return get_policy_base({ViTEncoderBlock})
+    return None  # get_policy_base({ViTEncoderBlock})
 
 
 def fsdp_checkpointing(model):
