@@ -733,8 +733,5 @@ if __name__ == "__main__":
     elif args.model == "vitsmart":
         import config.vit_smart_config as config
 
-    config.build_model(config.train_config().model_name)
-    print(f"********************* loading model done ****************************")
-
     fsdp_main()
     time.sleep(60*60)
