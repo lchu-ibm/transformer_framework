@@ -257,8 +257,7 @@ def fsdp_main():
     if not use_timm:
         print("******************* bulding the model here ************")
         # with init_empty_weights():
-        if local_rank == 0:
-            model = config.build_model(cfg.model_name)
+        model = config.build_model(cfg.model_name)
         print("******************* done with bulding model ************")
         print_memory_summary("vit","cuda")
         time.sleep(10)
@@ -322,8 +321,7 @@ def fsdp_main():
 
     # model weights to BF16?
     if cfg.model_weights_bf16:
-        if local_rank == 0:
-            model = model.to(torch.bfloat16)
+        model = model.to(torch.bfloat16)
         mp_policy = None
         if rank == 0:
             print(f"--> Model converted to BF16.\nRunning in ** PURE ** BFloat mode")
@@ -375,19 +373,18 @@ def fsdp_main():
         )
         rank_print(rank, f"{twod_mesh=}")
 
-        if local_rank == 0:
-            for i in range(40):
-                block = model.get_submodule(f"encoder.block_{i}")
-                parallelized_block = parallelize_module(
-                    module=block,
-                    device_mesh=twod_mesh,
-                    parallelize_plan={
-                        "self_attention": PairwiseParallel(),
-                        "mlp_block": PairwiseParallel(),
-                    },
-                    tp_mesh_dim=1,
-                )
-                block = parallelized_block
+        for i in range(40):
+            block = model.get_submodule(f"encoder.block_{i}")
+            parallelized_block = parallelize_module(
+                module=block,
+                device_mesh=twod_mesh,
+                parallelize_plan={
+                    "self_attention": PairwiseParallel(),
+                    "mlp_block": PairwiseParallel(),
+                },
+                tp_mesh_dim=1,
+            )
+            block = parallelized_block
         """
         if rank == 0:
             print(f"&&&&&&&&&&&\n {model=}")
@@ -404,9 +401,8 @@ def fsdp_main():
         fsdp_pg = twod_mesh.get_dim_groups()[0]
 
         # todo - add back main code later for resume
-        if local_rank == 0:
-            device = "cuda"
-            model.to(device)
+        device = "cuda"
+        model.to(device)
         # model = FSDP(model, process_group=fsdp_pg)
 
     process_group_fsdp = None
