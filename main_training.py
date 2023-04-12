@@ -258,6 +258,7 @@ def fsdp_main():
         print("******************* bulding the model here ************")
         # with init_empty_weights():
         model = config.build_model(cfg.model_name)
+        print("******************* done with bulding model ************")
         print_memory_summary("vit","cuda")
         time.sleep(10)
     elif use_timm:
