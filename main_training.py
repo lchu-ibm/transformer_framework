@@ -256,8 +256,8 @@ def fsdp_main():
 
     if not use_timm:
         print("******************* bulding the model here ************")
-        # with init_empty_weights():
-        model = config.build_model(cfg.model_name)
+        with init_empty_weights():
+            model = config.build_model(cfg.model_name)
         print("******************* done with bulding model ************")
         print_memory_summary("vit","cuda")
         time.sleep(10)
@@ -373,7 +373,7 @@ def fsdp_main():
         )
         rank_print(rank, f"{twod_mesh=}")
 
-        for i in range(40):
+        for i in range(48):
             block = model.get_submodule(f"encoder.block_{i}")
             parallelized_block = parallelize_module(
                 module=block,
@@ -401,8 +401,8 @@ def fsdp_main():
         fsdp_pg = twod_mesh.get_dim_groups()[0]
 
         # todo - add back main code later for resume
-        device = "cuda"
-        model.to(device)
+        # device = "cuda"
+        # model.to(device)
         # model = FSDP(model, process_group=fsdp_pg)
 
     process_group_fsdp = None
@@ -421,7 +421,7 @@ def fsdp_main():
         device_id=torch.cuda.current_device(),
         forward_prefetch=cfg.forward_prefetch,
         limit_all_gathers=True,
-        param_init_fn=my_init_fn
+        param_init_fn=my_init_fn,
     )
     print_memory_summary("vit","cuda")
 
