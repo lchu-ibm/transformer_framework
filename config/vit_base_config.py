@@ -43,7 +43,7 @@ class train_config(base_config):
     use_tp: bool = True
 
     # training
-    batch_size_training: int = 1
+    batch_size_training: int = 80
 
     # image size
     image_size: int = 224
@@ -164,7 +164,7 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
             "c_stem_kernels": [],
             "c_stem_strides": [],
             "c_stem_dims": [],
-            "n_layers": 96,
+            "n_layers": 48,
             "n_heads": 48,
             "hidden_d": 7680,
             "mlp_d": 30720,
