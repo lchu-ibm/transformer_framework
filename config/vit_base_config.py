@@ -43,7 +43,7 @@ class train_config(base_config):
     use_tp: bool = True
 
     # training
-    batch_size_training: int = 10
+    batch_size_training: int = 100
 
     # image size
     image_size: int = 224
