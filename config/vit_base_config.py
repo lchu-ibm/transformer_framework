@@ -166,7 +166,7 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
             "c_stem_dims": [],
             "n_layers": 60,
             "n_heads": 32,
-            "hidden_d": 12288,
+            "hidden_d": 10240,
             "mlp_d": 51200,
             "cls_type": "token",
             "stem_type": "patchify",
