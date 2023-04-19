@@ -43,7 +43,7 @@ class train_config(base_config):
     use_tp: bool = True
 
     # training
-    batch_size_training: int = 150
+    batch_size_training: int = 70
 
     # image size
     image_size: int = 224
@@ -158,16 +158,16 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
             "image_size": 224,
             "patch_size": 14,
             "num_classes": NUM_CLASSES,
-            "mlp_dim": 20480,
+            "mlp_dim": 30720,
             "dropout": 0.1,
             "emb_dropout": 0.1,
             "c_stem_kernels": [],
             "c_stem_strides": [],
             "c_stem_dims": [],
-            "n_layers": 32,
+            "n_layers": 40,
             "n_heads": 32,
-            "hidden_d": 5120,
-            "mlp_d": 20480,
+            "hidden_d": 7680,
+            "mlp_d": 30720,
             "cls_type": "token",
             "stem_type": "patchify",
         }
