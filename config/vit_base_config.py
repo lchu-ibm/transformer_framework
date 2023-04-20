@@ -43,7 +43,7 @@ class train_config(base_config):
     use_tp: bool = False
 
     # training
-    batch_size_training: int = 20
+    batch_size_training: int = 8
 
     # image size
     image_size: int = 224
@@ -152,25 +152,24 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
     model_args = dict()
     model_args["layernorm_eps"] = layernorm_eps_in
 
-    if model_size == "250M":
-        model_args = {
-            **model_args,
-            "image_size": 224,
-            "patch_size": 14,
-            "num_classes": NUM_CLASSES,
-            "mlp_dim": 30720,
-            "dropout": 0.1,
-            "emb_dropout": 0.1,
-            "c_stem_kernels": [],
-            "c_stem_strides": [],
-            "c_stem_dims": [],
-            "n_layers": 40,
-            "n_heads": 32,
-            "hidden_d": 7680,
-            "mlp_d": 30720,
-            "cls_type": "token",
-            "stem_type": "patchify",
-        }
+    model_args = {
+        **model_args,
+        "image_size": 224,
+        "patch_size": 14,
+        "num_classes": NUM_CLASSES,
+        "mlp_dim": 40960,
+        "dropout": 0.1,
+        "emb_dropout": 0.1,
+        "c_stem_kernels": [],
+        "c_stem_strides": [],
+        "c_stem_dims": [],
+        "n_layers": 48,
+        "n_heads": 32,
+        "hidden_d": 10240,
+        "mlp_d": 40960,
+        "cls_type": "token",
+        "stem_type": "patchify",
+    }
 
     assert model_args.get(
         "image_size"
