@@ -77,7 +77,7 @@ class base_config:
     batch_size_training: int = 64
 
     # activation checkpointing
-    fsdp_activation_checkpointing: bool = False
+    fsdp_activation_checkpointing: bool = True
 
     # validation
     run_validation: bool = True
