@@ -157,7 +157,7 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
         "image_size": 224,
         "patch_size": 14,
         "num_classes": NUM_CLASSES,
-        "mlp_dim": 61440,
+        "mlp_dim": 51200,
         "dropout": 0.1,
         "emb_dropout": 0.1,
         "c_stem_kernels": [],
@@ -166,7 +166,7 @@ def build_model(model_size: str, layernorm_eps_in: float = 1e-6):
         "n_layers": 60,
         "n_heads": 32,
         "hidden_d": 15360,
-        "mlp_d": 61440,
+        "mlp_d": 51200,
         "cls_type": "token",
         "stem_type": "patchify",
     }
