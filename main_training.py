@@ -364,7 +364,7 @@ def fsdp_main():
         ), "this config assumes setup for Tensor Parallel - distributed not ready here."
 
         # rank_print(f"TP is available = {TP_AVAILABLE}\n")
-        model_parallel_size = 8
+        model_parallel_size = 16
 
         # 2-D mesh is [dp, tp]
         twod_mesh = DeviceMesh(
