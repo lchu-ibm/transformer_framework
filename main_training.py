@@ -364,7 +364,7 @@ def fsdp_main():
         ), "this config assumes setup for Tensor Parallel - distributed not ready here."
 
         # rank_print(f"TP is available = {TP_AVAILABLE}\n")
-        model_parallel_size = 4
+        model_parallel_size = 8
 
         # 2-D mesh is [dp, tp]
         twod_mesh = DeviceMesh(
@@ -373,7 +373,7 @@ def fsdp_main():
         )
         rank_print(rank, f"{twod_mesh=}")
 
-        for i in range(60):
+        for i in range(48):
             block = model.get_submodule(f"encoder.block_{i}")
             parallelized_block = parallelize_module(
                 module=block,
