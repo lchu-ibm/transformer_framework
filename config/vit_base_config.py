@@ -261,12 +261,12 @@ def train(
     use_synthetic_data: bool = False,
     use_label_singular=False,  # not used, just to avoid errs as used in vitsmart
 ):
-    flop_counter = FlopCounterMode()
     cfg = train_config()
     loss_function = torch.nn.CrossEntropyLoss()
     t0 = time.perf_counter()
     for batch_index, (batch) in enumerate(data_loader, start=1):
         if local_rank == 0:
+            flop_counter = FlopCounterMode(depth=999999)
             with flop_counter:
                 if not use_synthetic_data:
                     inputs = batch["pixel_values"]
