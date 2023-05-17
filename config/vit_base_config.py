@@ -19,7 +19,7 @@ from models.vit import ViT, ViTEncoderBlock
 
 from .base_config import base_config, fsdp_checkpointing_base, get_policy_base
 
-from torch.utils.flop_counter import FlopCounterMode
+# from torch.utils.flop_counter import FlopCounterMode
 
 NUM_CLASSES = 1000  # default to imagenet, updated in dataset selection
 
