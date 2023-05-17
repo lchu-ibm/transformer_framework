@@ -261,35 +261,35 @@ def train(
     use_synthetic_data: bool = False,
     use_label_singular=False,  # not used, just to avoid errs as used in vitsmart
 ):
-    flop_counter = FlopCounterMode(model)
+    # flop_counter = FlopCounterMode(model)
     cfg = train_config()
     loss_function = torch.nn.CrossEntropyLoss()
     t0 = time.perf_counter()
     for batch_index, (batch) in enumerate(data_loader, start=1):
-        with flop_counter:
-            if not use_synthetic_data:
-                inputs = batch["pixel_values"]
-                targets = batch["labels"]
-            else:
-                inputs, targets = batch
-            inputs, targets = inputs.to(torch.cuda.current_device()), torch.squeeze(
-                targets.to(torch.cuda.current_device()), -1
-            )
-            if optimizer:
-                optimizer.zero_grad()
-            outputs = model(inputs)
-            loss = loss_function(outputs, targets)
-            loss.backward()
-            if optimizer:
-                optimizer.step()
+        # with flop_counter:
+        if not use_synthetic_data:
+            inputs = batch["pixel_values"]
+            targets = batch["labels"]
+        else:
+            inputs, targets = batch
+        inputs, targets = inputs.to(torch.cuda.current_device()), torch.squeeze(
+            targets.to(torch.cuda.current_device()), -1
+        )
+        if optimizer:
+            optimizer.zero_grad()
+        outputs = model(inputs)
+        loss = loss_function(outputs, targets)
+        loss.backward()
+        if optimizer:
+            optimizer.step()
 
-            # update durations and memory tracking
-            if local_rank == 0:
-                mini_batch_time = time.perf_counter() - t0
-                tracking_duration.append(mini_batch_time)
-                if memmax:
-                    memmax.update()
-        print(flop_counter.get_flop_counts())
+        # update durations and memory tracking
+        if local_rank == 0:
+            mini_batch_time = time.perf_counter() - t0
+            tracking_duration.append(mini_batch_time)
+            if memmax:
+                memmax.update()
+        # print(flop_counter.get_flop_counts())
         if batch_index % cfg.log_every == 0 and torch.distributed.get_rank() == 0:
             print(
                 f"step: {batch_index}: time taken for the last {cfg.log_every} steps is {mini_batch_time}, loss is {loss}"
