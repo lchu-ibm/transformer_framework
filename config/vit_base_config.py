@@ -265,7 +265,7 @@ def train(
     loss_function = torch.nn.CrossEntropyLoss()
     t0 = time.perf_counter()
     for batch_index, (batch) in enumerate(data_loader, start=1):
-        if local_rank == 0:
+        if batch_index == 3 and local_rank == 0:
             flop_counter = FlopCounterMode(depth=999999)
             with flop_counter:
                 if not use_synthetic_data:
