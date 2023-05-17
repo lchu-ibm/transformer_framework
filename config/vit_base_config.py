@@ -261,7 +261,7 @@ def train(
     use_synthetic_data: bool = False,
     use_label_singular=False,  # not used, just to avoid errs as used in vitsmart
 ):
-    flop_counter = FlopCounterMode(mod)
+    flop_counter = FlopCounterMode(model)
     cfg = train_config()
     loss_function = torch.nn.CrossEntropyLoss()
     t0 = time.perf_counter()
